@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Semantic Components 1–50 · Flashcards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Zhi+Mang+Xing&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f2ead9;
+    --paper-2:#e9dfc7;
+    --ink:#221d17;
+    --ink-soft:#4b433a;
+    --seal:#a3312a;
+    --seal-dark:#7c231e;
+    --gold:#a9812f;
+    --line:#cbbb96;
+    --card-back:#fbf6ea;
+    --jade:#3f7a52;
+  }
+  *{box-sizing:border-box;}
+  html, body{
+    height:100%;
+  }
+  body{
+    margin:0;
+    height:100vh;
+    height:100dvh;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(169,129,47,0.08), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(163,49,42,0.06), transparent 45%),
+      var(--paper);
+    font-family:'Source Serif 4', serif;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:12px 16px;
+  }
+  .app{
+    width:100%;
+    max-width:440px;
+    height:100%;
+    max-height:720px;
+    display:flex;
+    flex-direction:column;
+  }
+  header{
+    text-align:center;
+    margin-bottom:8px;
+    flex:0 0 auto;
+  }
+  .eyebrow{
+    font-family:'Zhi Mang Xing', cursive;
+    font-size:13px;
+    color:var(--seal);
+    letter-spacing:0.08em;
+  }
+  h1{
+    font-family:'Noto Serif SC', serif;
+    font-weight:700;
+    font-size:20px;
+    margin:2px 0 3px;
+    letter-spacing:0.01em;
+  }
+  .sub{
+    font-size:11px;
+    color:var(--ink-soft);
+    letter-spacing:0.04em;
+  }
+
+  .progress-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:0 2px 10px;
+    flex:0 0 auto;
+  }
+  .progress-track{
+    flex:1;
+    height:3px;
+    background:var(--line);
+    position:relative;
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    position:absolute;
+    left:0;top:0;bottom:0;
+    background:var(--seal);
+    width:0%;
+    transition:width 0.35s ease;
+  }
+  .progress-label{
+    font-size:12px;
+    color:var(--ink-soft);
+    font-variant-numeric:tabular-nums;
+    min-width:52px;
+    text-align:right;
+  }
+
+  .stage{
+    perspective:1600px;
+    margin-bottom:12px;
+    flex:1 1 auto;
+    min-height:0;
+    display:flex;
+    justify-content:center;
+  }
+  .card{
+    position:relative;
+    height:100%;
+    width:auto;
+    max-width:400px;
+    margin:0 auto;
+    aspect-ratio:5/7;
+    cursor:pointer;
+    transform-style:preserve-3d;
+    transition:transform 0.5s cubic-bezier(.4,.2,.2,1);
+  }
+  .card.flipped{ transform:rotateY(180deg); }
+  .face{
+    position:absolute;
+    inset:0;
+    backface-visibility:hidden;
+    border-radius:6px;
+    background:var(--card-back);
+    border:1px solid var(--line);
+    box-shadow:0 1px 0 var(--line), 0 12px 30px -14px rgba(34,29,23,0.35);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:16px 16px;
+    text-align:center;
+    overflow-y:auto;
+  }
+  .face::before{
+    content:"";
+    position:absolute;
+    inset:10px;
+    border:1px solid var(--line);
+    border-radius:3px;
+    pointer-events:none;
+    opacity:0.6;
+  }
+  .face-back{ transform:rotateY(180deg); }
+
+  .idx-tag{
+    position:absolute;
+    top:10px; left:10px;
+    font-family:'Noto Serif SC', serif;
+    font-size:11px;
+    color:#fff;
+    background:var(--seal);
+    padding:2px 8px 3px;
+    border-radius:2px;
+    letter-spacing:0.05em;
+  }
+  .form-hint{
+    position:absolute;
+    top:10px; right:10px;
+    font-size:10px;
+    color:var(--ink-soft);
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    max-width:110px;
+    text-align:right;
+    line-height:1.25;
+  }
+
+  .hanzi-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .hanzi{
+    font-family:'Noto Serif SC', serif;
+    font-size:min(24vw, 110px);
+    line-height:1;
+    color:var(--ink);
+  }
+  .hanzi-small-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-bottom:4px;
+  }
+  .hanzi-small{
+    font-family:'Noto Serif SC', serif;
+    font-size:40px;
+    line-height:1;
+    color:var(--ink);
+  }
+  .trad-wrap{
+    position:relative;
+    display:inline-block;
+    margin-right:12px;
+  }
+  .trad-wrap[hidden]{ display:none; }
+  .trad-char{
+    font-family:'Noto Serif SC', serif;
+    color:var(--ink-soft);
+  }
+  .trad-char-front{
+    font-size:min(20vw, 92px);
+  }
+  .trad-char-back{
+    font-size:36px;
+  }
+  .trad-badge{
+    position:absolute;
+    bottom:-4px;
+    right:-8px;
+    width:26px;
+    height:26px;
+    border:2.4px solid var(--seal);
+    border-radius:50%;
+    color:var(--seal);
+    font-family:'Source Serif 4', serif;
+    font-size:16px;
+    font-weight:700;
+    line-height:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--card-back);
+  }
+  .trad-badge.nudge-right{
+    right:-26px;
+  }
+  .variant-wrap{
+    position:relative;
+    display:inline-block;
+    margin-right:12px;
+  }
+  .variant-wrap[hidden]{ display:none; }
+  .variant-char{
+    font-family:'Noto Serif SC', serif;
+    color:var(--ink-soft);
+  }
+  .variant-char-front{
+    font-size:min(20vw, 92px);
+  }
+  .variant-char-back{
+    font-size:36px;
+  }
+  .variant-badge{
+    position:absolute;
+    bottom:-4px;
+    right:-8px;
+    width:26px;
+    height:26px;
+    border:2.4px solid var(--jade);
+    border-radius:50%;
+    color:var(--jade);
+    font-family:'Source Serif 4', serif;
+    font-size:16px;
+    font-weight:700;
+    line-height:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--card-back);
+  }
+  .variant-badge.nudge-right{
+    right:-26px;
+  }
+  .variant-badge-back{
+    width:16px;
+    height:16px;
+    border-width:1.5px;
+    font-size:10px;
+    bottom:-3px;
+    right:-6px;
+  }
+  .variant-badge-back.nudge-right{
+    right:-20px;
+  }
+  .tap-hint{
+    position:absolute;
+    bottom:10px;
+    font-size:10px;
+    color:var(--ink-soft);
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    opacity:0.65;
+  }
+
+  .pinyin{
+    font-family:'Noto Serif SC', serif;
+    font-size:18px;
+    font-weight:600;
+    color:var(--seal-dark);
+    margin-bottom:6px;
+  }
+  .meaning{
+    font-size:12.5px;
+    line-height:1.4;
+    color:var(--ink);
+    max-width:320px;
+  }
+  .rule{
+    width:32px;
+    height:1px;
+    background:var(--gold);
+    margin:8px 0;
+  }
+
+  .examples-label{
+    font-size:9px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-top:8px;
+    margin-bottom:4px;
+  }
+  .examples{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .example-chip{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1px;
+  }
+  .example-chip .ex-ch{
+    font-family:'Noto Serif SC', serif;
+    font-size:19px;
+    color:var(--ink);
+  }
+  .example-chip .ex-py{
+    font-size:9px;
+    color:var(--ink-soft);
+  }
+
+  .phrase-label{
+    font-size:9px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-top:8px;
+    margin-bottom:2px;
+  }
+  .phrase{
+    font-family:'Noto Serif SC', serif;
+    font-size:14px;
+    font-weight:600;
+    color:var(--gold);
+  }
+  .phrase-py{
+    font-size:10px;
+    color:var(--ink-soft);
+    margin-top:1px;
+  }
+  .phrase-note{
+    font-size:9.5px;
+    color:var(--ink-soft);
+    margin-top:2px;
+    max-width:290px;
+    font-style:italic;
+  }
+
+  .controls{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex:0 0 auto;
+  }
+  .nav-btn, .shuffle-btn{
+    font-family:'Source Serif 4', serif;
+    font-size:13px;
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--ink);
+    padding:8px 14px;
+    border-radius:4px;
+    cursor:pointer;
+    transition:background 0.15s, border-color 0.15s;
+  }
+  .nav-btn:hover, .shuffle-btn:hover{
+    background:var(--paper-2);
+    border-color:var(--gold);
+  }
+  .nav-btn:disabled{
+    opacity:0.35;
+    cursor:default;
+  }
+  .nav-btn:focus-visible, .shuffle-btn:focus-visible, .card:focus-visible{
+    outline:2px solid var(--seal);
+    outline-offset:2px;
+  }
+  .nav-group{ display:flex; gap:8px; }
+
+  footer{
+    margin-top:10px;
+    text-align:center;
+    font-size:10px;
+    color:var(--ink-soft);
+    letter-spacing:0.03em;
+    flex:0 0 auto;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .card{ transition:none; }
+    .progress-fill{ transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="eyebrow">部首 · 说文解字</div>
+    <h1>Semantic Components 1–50</h1>
+    <div class="sub">Tap the card to flip · use ← → to move between cards</div>
+  </header>
+
+  <div class="progress-row">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">1 / 50</div>
+  </div>
+
+  <div class="stage">
+    <div class="card" id="card" tabindex="0" role="button" aria-label="Flashcard, tap to flip">
+      <div class="face face-front">
+        <span class="idx-tag" id="idxFront">S1</span>
+        <span class="form-hint" id="formFront"></span>
+        <div class="hanzi-row">
+          <div class="hanzi" id="hanziFront">土</div>
+          <span class="trad-wrap" id="tradWrapFront" hidden>
+            <span class="trad-char trad-char-front" id="tradCharFront"></span>
+            <span class="trad-badge" id="tradBadgeFront">t</span>
+          </span>
+          <span class="variant-wrap" id="variantWrapFront" hidden>
+            <span class="variant-char variant-char-front" id="variantCharFront"></span>
+            <span class="variant-badge" id="variantBadgeFront">V</span>
+          </span>
+        </div>
+        <div class="tap-hint">tap to reveal</div>
+      </div>
+      <div class="face face-back">
+        <span class="idx-tag" id="idxBack">S1</span>
+        <span class="form-hint" id="formBack"></span>
+        <div class="hanzi-small-row">
+          <div class="hanzi-small" id="hanziBack">土</div>
+          <span class="trad-wrap" id="tradWrapBack" hidden>
+            <span class="trad-char trad-char-back" id="tradCharBack"></span>
+            <span class="trad-badge" id="tradBadgeBack">t</span>
+          </span>
+          <span class="variant-wrap" id="variantWrapBack" hidden>
+            <span class="variant-char variant-char-back" id="variantCharBack"></span>
+            <span class="variant-badge variant-badge-back" id="variantBadgeBack">V</span>
+          </span>
+        </div>
+        <div class="pinyin" id="pinyinBack">tǔ</div>
+        <div class="rule"></div>
+        <div class="meaning" id="meaningBack"></div>
+        <div class="examples-label">Used in</div>
+        <div class="examples" id="examplesBack"></div>
+        <div class="phrase-label">Spoken as</div>
+        <div class="phrase" id="phraseBack"></div>
+        <div class="phrase-py" id="phrasePyBack"></div>
+        <div class="phrase-note" id="phraseNoteBack"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="nav-group">
+      <button class="nav-btn" id="prevBtn" aria-label="Previous card">← Prev</button>
+      <button class="nav-btn" id="nextBtn" aria-label="Next card">Next →</button>
+    </div>
+    <button class="shuffle-btn" id="shuffleBtn">Shuffle</button>
+  </div>
+
+  <footer>Outlier Linguistics · Simplified Edition v1.2 · components 1–50</footer>
+</div>
+
+<script>
+const DATA = [
+  {n:1, ch:"土", form:"", py:"tǔ", m:"A clump of dirt sitting on the ground — dirt, ground, land.", ex:[["地","dì"],["场","chǎng","場"],["坐","zuò"]], ph:"土字旁", phpy:"tǔ zì páng"},
+  {n:2, ch:"水", form:"", py:"shuǐ", m:"Flowing water, shown with ripples and eddies — water, liquid.", ex:[["泉","quán"],["泰","tài"],["尿","niào"]], ph:"水字底", phpy:"shuǐ zì dǐ"},
+  {n:3, ch:"氵", form:"variant of 水", py:"shuǐ", m:"The compound form of 水, used on the left side of characters — water, liquid.", ex:[["河","hé"],["海","hǎi"],["汗","hàn"]], ph:"三点水", phpy:"sān diǎn shuǐ"},
+  {n:4, ch:"阝", form:"left-side variant of 阜", py:"fù", m:"A series of terraced slopes on a mountainside — a mound, a hill; always appears on the left side of a character.", ex:[["阳","yáng","陽"],["阴","yīn","陰"],["院","yuàn"]], ph:"左耳刀", phpy:"zuǒ ěr dāo"},
+  {n:5, ch:"阝", form:"right-side variant of 邑", py:"yì", m:"A person kneeling outside city walls — a city, related to towns, kingdoms, and states; always appears on the right side of a character.", ex:[["那","nà"],["郑","zhèng","鄭"],["部","bù"]], ph:"右耳刀", phpy:"yòu ěr dāo"},
+  {n:6, ch:"山", form:"", py:"shān", m:"Three mountain peaks — mountain, mountainous.", ex:[["岩","yán"],["岛","dǎo","島"],["峰","fēng"]], ph:"山字旁", phpy:"shān zì páng"},
+  {n:7, ch:"艹", variant:"艸", form:"", py:"cǎo", m:"Blades of vegetation sprouting from the ground — plants, vegetation, grass.", ex:[["花","huā"],["茶","chá"],["草","cǎo"]], ph:"草字头", phpy:"cǎo zì tóu"},
+  {n:8, ch:"日", form:"", py:"rì", m:"The sun — related to the sun, light, heat, and time; day.", ex:[["明","míng"],["时","shí","時"],["早","zǎo"]], ph:"日字旁", phpy:"rì zì páng"},
+  {n:9, ch:"月", form:"", py:"yuè", m:"The crescent moon — related to the moon and the passage of time; month.", ex:[["明","míng"],["期","qī"],["朋","péng"]], ph:"月字旁", phpy:"yuè zì páng"},
+  {n:10, ch:"木", form:"", py:"mù", m:"A tree, showing branches, trunk, and roots — tree, wood.", ex:[["林","lín"],["桌","zhuō"],["树","shù","樹"]], ph:"木字旁", phpy:"mù zì páng"},
+  {n:11, ch:"火", form:"", py:"huǒ", m:"Flames rising — fire, flame, light, heat.", ex:[["灯","dēng","燈"],["烧","shāo","燒"],["炎","yán"]], ph:"火字旁", phpy:"huǒ zì páng"},
+  {n:12, ch:"灬", form:"variant of 火", py:"huǒ", m:"The compound form of 火, usually seen at the bottom of a character — fire, flame, light, heat.", ex:[["热","rè","熱"],["烈","liè"],["煮","zhǔ"]], ph:"四点底", phpy:"sì diǎn dǐ"},
+  {n:13, ch:"王", variant:"玉", form:"", py:"yù", m:"Pieces of jade strung together on a cord — jade, precious stone (often written as 王 within characters).", ex:[["玩","wán"],["珠","zhū"],["理","lǐ"]], ph:"王字旁", phpy:"wáng zì páng", note:"Written 王 inside characters even though the component is 玉 (jade)."},
+  {n:14, ch:"石", form:"", py:"shí", m:"A stone lying at the foot of a cliff — stone, hard, solid.", ex:[["码","mǎ","碼"],["破","pò"],["硬","yìng"]], ph:"石字旁", phpy:"shí zì páng"},
+  {n:15, ch:"禾", form:"", py:"hé", m:"A ripening grain plant bending under the weight of its seed head — grain, millet.", ex:[["秋","qiū"],["种","zhǒng","種"],["秒","miǎo"]], ph:"禾木旁", phpy:"hé mù páng"},
+  {n:16, ch:"竹", form:"", py:"zhú", m:"Drooping bamboo leaves — bamboo.", ex:[["笔","bǐ","筆"],["笑","xiào"],["简","jiǎn","簡"]], ph:"竹字头", phpy:"zhú zì tóu"},
+  {n:17, ch:"米", form:"", py:"mǐ", m:"Scattered grains of husked rice — rice, grain.", ex:[["粉","fěn"],["糖","táng"],["类","lèi","類"]], ph:"米字旁", phpy:"mǐ zì páng"},
+  {n:18, ch:"纟", variant:"糸", form:"", py:"sī", m:"A bundle of twisted silk thread — silk, thread; related to textiles and sewing.", ex:[["红","hóng","紅"],["线","xiàn","線"],["给","gěi","給"]], ph:"绞丝旁", phpy:"jiǎo sī páng"},
+  {n:19, ch:"幺", form:"", py:"yāo", m:"A small strand of silk thread — small, tiny, minute.", ex:[["幼","yòu"],["幻","huàn"],["玄","xuán"]], ph:"幺字旁", phpy:"yāo zì páng"},
+  {n:20, ch:"钅", variant:"金", form:"", py:"jīn", m:"Ore smelting in a mining shaft or kiln — metal, gold, money.", ex:[["钱","qián","錢"],["铁","tiě","鐵"],["银","yín"]], ph:"金字旁", phpy:"jīn zì páng"},
+  {n:21, ch:"人", form:"", py:"rén", m:"A side view of a standing person — person, related to people in general.", ex:[["从","cóng","從"],["众","zhòng","眾"],["今","jīn"]], ph:"人字头", phpy:"rén zì tóu"},
+  {n:22, ch:"亻", form:"variant of 人", py:"rén", m:"The compound form of 人, used on the left side of characters — person, related to people.", ex:[["你","nǐ"],["他","tā"],["们","men","們"]], ph:"单人旁", phpy:"dān rén páng"},
+  {n:23, ch:"儿", form:"", py:"rén / ér", m:"A side view of a person, sometimes kneeling — person, having to do with people; also \"child\" in modern usage.", ex:[["儿","ér","兒"],["兄","xiōng"],["元","yuán"]], ph:"儿字底", phpy:"ér zì dǐ"},
+  {n:24, ch:"言", form:"", py:"yán", m:"A tongue sticking out below a mouth — speech, language, words.", ex:[["誉","yù","譽"],["誓","shì"],["警","jǐng"]], ph:"言字底", phpy:"yán zì dǐ"},
+  {n:25, ch:"讠", trad:"言", form:"", py:"yán", m:"The compound form of 言, used on the left side of characters — speech, language.", ex:[["说","shuō","說"],["语","yǔ","語"],["请","qǐng","請"]], ph:"言字旁", phpy:"yán zì páng"},
+  {n:26, ch:"口", form:"", py:"kǒu", m:"An open mouth — mouth, or an opening resembling a mouth.", ex:[["吃","chī"],["叫","jiào"],["吗","ma","嗎"]], ph:"口字旁", phpy:"kǒu zì páng"},
+  {n:27, ch:"心", form:"", py:"xīn", m:"The human heart — related to thoughts, emotions, and feelings.", ex:[["想","xiǎng"],["忘","wàng"],["念","niàn"]], ph:"心字底", phpy:"xīn zì dǐ"},
+  {n:28, ch:"忄", form:"variant of 心", py:"xīn", m:"The compound form of 心, used on the left side of characters — related to thoughts and emotions.", ex:[["快","kuài"],["情","qíng"],["怕","pà"]], ph:"竖心旁", phpy:"shù xīn páng"},
+  {n:29, ch:"手", form:"", py:"shǒu", m:"A human hand with fingers spread — action involving the hand, hand-related activity.", ex:[["拿","ná"],["掌","zhǎng"],["拳","quán"]], ph:"手字旁", phpy:"shǒu zì páng"},
+  {n:30, ch:"扌", form:"variant of 手", py:"shǒu", m:"The compound form of 手, used on the left side of characters — hand, action with the hand.", ex:[["打","dǎ"],["拍","pāi"],["推","tuī"]], ph:"提手旁", phpy:"tí shǒu páng"},
+  {n:31, ch:"女", form:"", py:"nǚ", m:"A side view of a kneeling person in a submissive posture — woman, women.", ex:[["好","hǎo"],["姐","jiě"],["妈","mā","媽"]], ph:"女字旁", phpy:"nǚ zì páng"},
+  {n:32, ch:"疒", form:"", py:"nè", m:"A person lying on a sickbed — illness, disease.", ex:[["病","bìng"],["疼","téng"],["疯","fēng","瘋"]], ph:"病字旁", phpy:"bìng zì páng"},
+  {n:33, ch:"目", form:"", py:"mù", m:"A human eye — eye, related to sight.", ex:[["看","kàn"],["睛","jīng"],["眼","yǎn"]], ph:"目字旁", phpy:"mù zì páng"},
+  {n:34, ch:"罒", variant:"网", form:"", py:"wǎng", m:"A woven net — net, related to nets and netting.", ex:[["罗","luó","羅"],["罪","zuì"],["置","zhì"]], ph:"罗字头", phpy:"luó zì tóu"},
+  {n:35, ch:"又", form:"", py:"yòu", m:"A right hand — hand, action with the hand; acquisition.", ex:[["双","shuāng","雙"],["反","fǎn"],["取","qǔ"]], ph:"又字旁", phpy:"yòu zì páng"},
+  {n:36, ch:"足", form:"", py:"zú", m:"A leg ending in a foot — foot, related to feet, walking, and running; also \"enough.\"", ex:[["跑","pǎo"],["路","lù"],["跳","tiào"]], ph:"足字旁", phpy:"zú zì páng"},
+  {n:37, ch:"页", trad:"頁", form:"", py:"yè", m:"A shorthand for a person's head — head; also \"page\" in modern usage.", ex:[["顶","dǐng","頂"],["顺","shùn","順"],["题","tí","題"]], ph:"页字旁", phpy:"yè zì páng"},
+  {n:38, ch:"刀", form:"", py:"dāo", m:"A single-edged blade — knife, related to cutting.", ex:[["分","fēn"],["切","qiē"],["刃","rèn"]], ph:"刀字旁", phpy:"dāo zì páng"},
+  {n:39, ch:"刂", form:"variant of 刀", py:"dāo", m:"The compound form of 刀, used on the right side of characters — knife, cutting.", ex:[["刻","kè"],["到","dào"],["别","bié","別"]], ph:"立刀旁", phpy:"lì dāo páng"},
+  {n:40, ch:"力", form:"", py:"lì", m:"A plow — strength, effort, plowing, farming.", ex:[["加","jiā"],["助","zhù"],["动","dòng","動"]], ph:"力字旁", phpy:"lì zì páng"},
+  {n:41, ch:"宀", form:"", py:"mián", m:"A roof with surrounding walls — a building, related to buildings and places.", ex:[["家","jiā"],["宝","bǎo","寶"],["安","ān"]], ph:"宝盖头", phpy:"bǎo gài tóu"},
+  {n:42, ch:"广", form:"", py:"yǎn", m:"A simple shelter built against a cliff or mountainside — a building, related to buildings or places.", ex:[["店","diàn"],["座","zuò"],["床","chuáng"]], ph:"广字头", phpy:"guǎng zì tóu"},
+  {n:43, ch:"田", form:"", py:"tián", m:"A field divided into plots by footpaths — field, land.", ex:[["男","nán"],["界","jiè"],["画","huà","畫"]], ph:"田字旁", phpy:"tián zì páng"},
+  {n:44, ch:"攵", variant:"攴", form:"", py:"pū", m:"A hand holding a stick, about to strike — to attack, strike, or tap.", ex:[["收","shōu"],["放","fàng"],["改","gǎi"]], ph:"反文旁", phpy:"fǎn wén páng"},
+  {n:45, ch:"车", trad:"車", form:"", py:"chē / jū", m:"An overhead view of a horse-drawn chariot — car, vehicle.", ex:[["轮","lún","輪"],["转","zhuǎn","轉"],["较","jiào","較"]], ph:"车字旁", phpy:"chē zì páng"},
+  {n:46, ch:"肉", form:"", py:"ròu", m:"A piece of meat with visible grain — meat, flesh.", ex:[["胖","pàng"],["肚","dù"],["脏","zàng","臟"]], ph:"月字旁", phpy:"yuè zì páng", note:"This is the \"flesh moon\" — 肉's compound form looks like 月 but is unrelated to the moon."},
+  {n:47, ch:"犬", form:"", py:"quǎn", m:"A dog, shown in profile with its tail — dog, animal.", ex:[["状","zhuàng","狀"],["哭","kū"],["献","xiàn","獻"]], ph:"犬字旁", phpy:"quǎn zì páng"},
+  {n:48, ch:"犭", form:"variant of 犬", py:"quǎn", m:"The compound form of 犬, used on the left side of characters — dog, animal.", ex:[["猫","māo"],["狗","gǒu"],["猪","zhū","豬"]], ph:"反犬旁", phpy:"fǎn quǎn páng"},
+  {n:49, ch:"虫", form:"", py:"chóng", m:"A venomous snake or lethal creature — reptiles, insects, worms, and related small creatures.", ex:[["蛇","shé"],["蝴","hú"],["蚁","yǐ","蟻"]], ph:"虫字旁", phpy:"chóng zì páng"},
+  {n:50, ch:"贝", trad:"貝", form:"", py:"bèi", m:"A seashell, once used as currency — valuable, something precious.", ex:[["财","cái","財"],["购","gòu","購"],["贵","guì","貴"]], ph:"贝字旁", phpy:"bèi zì páng"}
+];
+
+let order = DATA.map((_, i) => i);
+let pos = 0;
+let flipped = false;
+
+const card = document.getElementById('card');
+const idxFront = document.getElementById('idxFront');
+const idxBack = document.getElementById('idxBack');
+const formFront = document.getElementById('formFront');
+const formBack = document.getElementById('formBack');
+const hanziFront = document.getElementById('hanziFront');
+const hanziBack = document.getElementById('hanziBack');
+const tradWrapFront = document.getElementById('tradWrapFront');
+const tradCharFront = document.getElementById('tradCharFront');
+const tradWrapBack = document.getElementById('tradWrapBack');
+const tradCharBack = document.getElementById('tradCharBack');
+const tradBadgeFront = document.getElementById('tradBadgeFront');
+const tradBadgeBack = document.getElementById('tradBadgeBack');
+const BADGE_NUDGE_RIGHT = new Set([13, 20, 25, 34, 37, 45, 50]);
+const variantWrapFront = document.getElementById('variantWrapFront');
+const variantCharFront = document.getElementById('variantCharFront');
+const variantWrapBack = document.getElementById('variantWrapBack');
+const variantCharBack = document.getElementById('variantCharBack');
+const variantBadgeFront = document.getElementById('variantBadgeFront');
+const variantBadgeBack = document.getElementById('variantBadgeBack');
+const pinyinBack = document.getElementById('pinyinBack');
+const meaningBack = document.getElementById('meaningBack');
+const progressFill = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const shuffleBtn = document.getElementById('shuffleBtn');
+const examplesBack = document.getElementById('examplesBack');
+const phraseBack = document.getElementById('phraseBack');
+const phrasePyBack = document.getElementById('phrasePyBack');
+const phraseNoteBack = document.getElementById('phraseNoteBack');
+
+function render(){
+  const item = DATA[order[pos]];
+  idxFront.textContent = 'S' + item.n;
+  idxBack.textContent = 'S' + item.n;
+  formFront.textContent = item.form;
+  formBack.textContent = item.form;
+  hanziFront.textContent = item.ch;
+  hanziBack.textContent = item.ch;
+  if(item.trad){
+    tradCharFront.textContent = item.trad;
+    tradCharBack.textContent = item.trad;
+    tradWrapFront.hidden = false;
+    tradWrapBack.hidden = false;
+    const nudge = BADGE_NUDGE_RIGHT.has(item.n);
+    tradBadgeFront.classList.toggle('nudge-right', nudge);
+    tradBadgeBack.classList.toggle('nudge-right', nudge);
+  } else {
+    tradWrapFront.hidden = true;
+    tradWrapBack.hidden = true;
+  }
+  if(item.variant){
+    variantCharFront.textContent = item.variant;
+    variantCharBack.textContent = item.variant;
+    variantWrapFront.hidden = false;
+    variantWrapBack.hidden = false;
+    const nudge = BADGE_NUDGE_RIGHT.has(item.n);
+    variantBadgeFront.classList.toggle('nudge-right', nudge);
+    variantBadgeBack.classList.toggle('nudge-right', nudge);
+  } else {
+    variantWrapFront.hidden = true;
+    variantWrapBack.hidden = true;
+  }
+  pinyinBack.textContent = item.py;
+  meaningBack.textContent = item.m;
+
+  phraseBack.textContent = item.ph || '';
+  phrasePyBack.textContent = item.phpy || '';
+  phraseNoteBack.textContent = item.note || '';
+
+  examplesBack.innerHTML = '';
+  (item.ex || []).forEach(([ch, py]) => {
+    const chip = document.createElement('div');
+    chip.className = 'example-chip';
+    const chSpan = document.createElement('div');
+    chSpan.className = 'ex-ch';
+    chSpan.textContent = ch;
+    const pySpan = document.createElement('div');
+    pySpan.className = 'ex-py';
+    pySpan.textContent = py;
+    chip.appendChild(chSpan);
+    chip.appendChild(pySpan);
+    examplesBack.appendChild(chip);
+  });
+
+  card.classList.remove('flipped');
+  flipped = false;
+
+  const total = DATA.length;
+  progressFill.style.width = ((pos) / (total - 1) * 100) + '%';
+  progressLabel.textContent = (pos + 1) + ' / ' + total;
+
+  prevBtn.disabled = pos === 0;
+  nextBtn.disabled = pos === total - 1;
+}
+
+function flip(){
+  flipped = !flipped;
+  card.classList.toggle('flipped', flipped);
+}
+
+function next(){
+  if(pos < DATA.length - 1){ pos++; render(); }
+}
+function prev(){
+  if(pos > 0){ pos--; render(); }
+}
+function shuffle(){
+  for(let i = order.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  pos = 0;
+  render();
+}
+
+card.addEventListener('click', flip);
+card.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); flip(); }
+});
+prevBtn.addEventListener('click', prev);
+nextBtn.addEventListener('click', next);
+shuffleBtn.addEventListener('click', shuffle);
+
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'ArrowRight') next();
+  if(e.key === 'ArrowLeft') prev();
+});
+
+render();
+</script>
+</body>
+</html>
