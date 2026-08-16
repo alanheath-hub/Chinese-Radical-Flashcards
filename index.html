@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chinese Radical Flashcards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Zhi+Mang+Xing&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f2ead9;
+    --paper-2:#e9dfc7;
+    --ink:#221d17;
+    --ink-soft:#4b433a;
+    --seal:#a3312a;
+    --seal-dark:#7c231e;
+    --gold:#a9812f;
+    --line:#cbbb96;
+    --card-back:#fbf6ea;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(169,129,47,0.08), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(163,49,42,0.06), transparent 45%),
+      var(--paper);
+    font-family:'Source Serif 4', serif;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 20px;
+  }
+  .wrap{
+    width:100%;
+    max-width:640px;
+    text-align:center;
+  }
+  .eyebrow{
+    font-family:'Zhi Mang Xing', cursive;
+    font-size:18px;
+    color:var(--seal);
+    letter-spacing:0.08em;
+  }
+  h1{
+    font-family:'Noto Serif SC', serif;
+    font-weight:700;
+    font-size:32px;
+    margin:4px 0 8px;
+  }
+  .sub{
+    font-size:15px;
+    color:var(--ink-soft);
+    margin-bottom:36px;
+    line-height:1.5;
+  }
+  .cards{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+  a.card{
+    display:block;
+    text-decoration:none;
+    color:var(--ink);
+    background:var(--card-back);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:22px 26px;
+    text-align:left;
+    box-shadow:0 1px 0 var(--line), 0 10px 26px -16px rgba(34,29,23,0.35);
+    transition:transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  a.card:hover{
+    transform:translateY(-2px);
+    border-color:var(--gold);
+    box-shadow:0 1px 0 var(--line), 0 14px 30px -16px rgba(34,29,23,0.45);
+  }
+  .card-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .card-title{
+    font-family:'Noto Serif SC', serif;
+    font-weight:700;
+    font-size:20px;
+    margin-bottom:4px;
+  }
+  .card-range{
+    font-size:12px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--seal-dark);
+    margin-bottom:2px;
+  }
+  .card-desc{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    line-height:1.4;
+  }
+  .arrow{
+    font-family:'Noto Serif SC', serif;
+    font-size:22px;
+    color:var(--gold);
+    flex-shrink:0;
+  }
+  footer{
+    margin-top:36px;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    letter-spacing:0.03em;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="eyebrow">部首 · 说文解字</div>
+    <h1>Chinese Radical Flashcards</h1>
+    <div class="sub">Semantic components, one hundred in total, split into two decks.<br>Tap a set below to start studying.</div>
+
+    <div class="cards">
+      <a class="card" href="semantic-components-1-50-flashcards.html">
+        <div class="card-row">
+          <div>
+            <div class="card-range">Components S1&ndash;S50</div>
+            <div class="card-title">Set One</div>
+            <div class="card-desc">土, 水, 木, 火, 人, 心, 手, and more everyday radicals.</div>
+          </div>
+          <div class="arrow">&rarr;</div>
+        </div>
+      </a>
+
+      <a class="card" href="semantic-components-51-100-flashcards.html">
+        <div class="card-row">
+          <div>
+            <div class="card-range">Components S51&ndash;S100</div>
+            <div class="card-title">Set Two</div>
+            <div class="card-desc">酉, 门, 见, 马, 鸟, 鱼, and more advanced radicals.</div>
+          </div>
+          <div class="arrow">&rarr;</div>
+        </div>
+      </a>
+    </div>
+
+    <footer>Outlier Linguistics &middot; Simplified Edition v1.2</footer>
+  </div>
+</body>
+</html>
